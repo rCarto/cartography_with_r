@@ -1,4 +1,4 @@
-# [Cartographie with R](https://rcarto.github.io/cartographie_with_r/) <img src="img/globe-africa-solid.svg" align="right" width="120"/>
+# [Cartography with R](https://rcarto.github.io/cartographie_with_r/) <img src="img/globe-africa-solid.svg" align="right" width="120"/>
 
 
 The aim of this document is to provide support for learning thematic mapping with R. 
