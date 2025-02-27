@@ -12,5 +12,5 @@ This document is an extract and a translation of [Cartographie avec R](https://r
 
 
 
-[![](img/cc-icon.svg){height=42px}](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr)  
+[![](img/cc-icon.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr)  
 This document is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 License.
