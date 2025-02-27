@@ -1,0 +1,62 @@
+project:
+  type: book
+  output-dir: docs
+  resources: 
+    - "geodata.zip"
+    - "Exercices.html"
+execute: 
+  freeze: auto
+  
+format:
+  html:
+    callout-appearance: simple
+    callout-icon: false
+    theme: cosmo
+    pagetitle: "Cartography with R"
+    author-meta: "Timothée Giraud et Hugues Pecout"
+    description-meta: "Create reproducible maps with R"
+    bibliography: [book.bib]
+    lang: en
+
+book:
+  title: "Cartography with R"
+  description: "Create reproducible maps with R"
+  author:
+    - name: Timothée Giraud
+      orcid: 0000-0001-5679-6536
+      url: https://rcarto.github.io
+      affiliation:
+          name: RIATE (CNRS)
+          url: https://riate.cnrs.fr
+  date: today
+  date-format: long
+  search: true
+  repo-url: https://github.com/rcarto/cartographie_with_r/
+  cover-image: img/globe-africa-solid.svg
+  sidebar: 
+    footer: "</br>[![](img/cc-icon.svg){height=42px}](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr)" 
+  favicon: img/globe-africa-solid.svg
+  site-url: https://rcarto.github.io/rcarto/cartographie_with_r/
+  open-graph: true
+  chapters:
+    - index.qmd
+    - 00_ecosystem.qmd
+    - 01_mapsf.qmd
+    - 02_semiologie.qmd
+    - 03_types_de_cartes.qmd
+    - 04_mise_en_page.qmd
+    - 2000_references.qmd
+  appendices:
+    - 2002_data.qmd
+  
+knitr:
+  opts_chunk:
+    collapse: false
+    comment: "#>" 
+    fig.height: 5.74
+    fig.width: 6
+    cache: true
+    crop: true
+    fig.path: "figs/"
+    cache.path: "cache/"
+

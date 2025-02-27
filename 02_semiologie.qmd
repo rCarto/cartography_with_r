@@ -1,0 +1,19 @@
+# The Cartographic Language
+
+&#128279; [Thematic Cartography - Cartographic Language](https://rcarto.github.io/thematic_cartography)
+
+
+![Map semiology decision tree](img/lightsemio.png)
+
+
+## Exercice {.unnumbered}
+
+How to represent the following variables :
+
+* A municipal population
+* A median age by department
+* A growth rate
+* The administrative status of a commune (prefecture, sub-prefecture, simple commune, etc.)
+* Life expectancy per country
+
+

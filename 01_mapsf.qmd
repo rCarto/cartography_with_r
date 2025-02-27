@@ -1,0 +1,68 @@
+# mapsf
+
+## Presentation
+
+<img src='img/logo.png' align='right' width='120' />
+
+
+The spatial ecosystem of R is rich, dynamic and mature and several packages can be used to import, process and represent spatial data. The [`mapsf`](https://CRAN.R-project.org/package=mapsf) package [@R-mapsf] is a part of this ecosystem and can be used to create high-quality thematic maps.
+
+
+![A typical processing chain](img/workflow.png)
+
+
+
+
+:::{.callout-note}
+Other packages can be used to create thematic maps.  
+The `ggplot2` package [@R-ggplot2], in conjunction with the `ggspatial` package [@R-ggspatial], can be used to display spatial objects and create simple thematic maps.   
+The `tmap` package [@R-tmap] is dedicated to creating thematic maps, and uses a syntax similar to that of `ggplot2` (sequence of instructions combined with the `+` sign).   
+Documentation and tutorials for using these two packages are readily available on the web.
+:::
+
+In this document, we will mainly be using the `mapsf` package, which has fairly comprehensive functionality and is fairly easy to learn. What's more, the package is relatively lightweight.
+
+![A minimal number of well-known dependencies](img/deps.png)
+
+
+`mapsf` can be used to create most of the map types commonly used in statistical cartography (choropleth maps, typologies, proportional or graduated symbols, etc.).  
+For each type of map, a number of parameters can be used to customise the cartographic representation. These parameters are the same as those found in standard GIS or cartography software (for example, the choice of discretisations and colour palettes, changing the size of symbols or customising legends).  
+In addition to the data representation functions, other functions are dedicated to cartographic design (themes or graphic charters, legends, scales, orientation arrows, titles, credits, annotations, etc.), the creation of insets or map export.  
+
+## Documentation
+
+
+::: {layout-ncol=2}
+
+[Website](https://riatelab.github.io/mapsf/) : 
+![](img/webmapsf.png)
+
+
+[*cheat sheet*](https://raw.githubusercontent.com/riatelab/mapsf/master/vignettes/web_only/img/mapsf_cheatsheet.pdf) : 
+![](img/mapsf_cheatsheet.png)
+
+:::
+
+
+**Vignettes** : 
+
+- [Get started](https://riatelab.github.io/mapsf/articles/mapsf.html)
+- [How to create faceted maps](https://riatelab.github.io/mapsf/articles/web_only/how_to_create_faceted_maps.html)
+- [How to create inset maps](https://riatelab.github.io/mapsf/articles/web_only/how_to_create_inset_maps.html)
+- [How to export maps](https://riatelab.github.io/mapsf/articles/web_only/how_to_export_maps.html)
+- [How to use a custom font family](https://riatelab.github.io/mapsf/articles/web_only/how_to_use_a_custom_font_family.html)
+- [How to use themes](https://riatelab.github.io/mapsf/articles/web_only/how_to_use_themes.html)
+
+## Exercice {.unnumbered}
+
+1. The data used in this document is stored in an RStudio project. 
+You must download it and unzip it on your machine. You will then be able to test all the operations proposed in this document within the **geodata** project.  
+[Download the project](https://rcarto.github.io/cartographie_avec_r/geodata.zip){.btn .btn-primary .btn-sm role=‘button’}  
+
+2. We will mainly use the `mapsf` package.   
+Install it using the `install.packages()` function.
+
+3. What is the version of the package?
+
+4. What is new compared to the previous version?
+

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://rcarto.github.io/rcarto/cartographie_with_r/index.html</loc>
+    <lastmod>2025-02-27T14:57:29.316Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rcarto.github.io/rcarto/cartographie_with_r/00_ecosystem.html</loc>
+    <lastmod>2025-02-27T14:58:41.384Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rcarto.github.io/rcarto/cartographie_with_r/01_mapsf.html</loc>
+    <lastmod>2025-02-24T10:03:16.682Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rcarto.github.io/rcarto/cartographie_with_r/02_semiologie.html</loc>
+    <lastmod>2025-02-26T09:09:43.044Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rcarto.github.io/rcarto/cartographie_with_r/03_types_de_cartes.html</loc>
+    <lastmod>2025-02-24T15:17:17.811Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rcarto.github.io/rcarto/cartographie_with_r/04_mise_en_page.html</loc>
+    <lastmod>2025-02-24T15:17:11.699Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rcarto.github.io/rcarto/cartographie_with_r/2000_references.html</loc>
+    <lastmod>2024-05-16T12:22:11.344Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rcarto.github.io/rcarto/cartographie_with_r/2002_data.html</loc>
+    <lastmod>2024-10-07T09:50:53.988Z</lastmod>
+  </url>
+</urlset>
