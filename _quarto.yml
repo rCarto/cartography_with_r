@@ -40,14 +40,18 @@ book:
   open-graph: true
   chapters:
     - index.qmd
-    - 00_ecosystem.qmd
-    - 01_mapsf.qmd
-    - 02_semiologie.qmd
-    - 03_types_de_cartes.qmd
-    - 04_mise_en_page.qmd
+    - part: "**I. The Spatial Ecosystem**"
+      chapters: 
+         - 0_spatial_ecosystem.qmd
+         - 1_vector_data.qmd
+         - 2_geoprocessing.qmd
+    - part: "**II. Cartography**"
+      chapters: 
+        - 3_cartography.qmd
+        - 4_mapsf.qmd
     - 2000_references.qmd
-  appendices:
-    - 2002_data.qmd
+  # appendices:
+  #   - 2002_data.qmd
   
 knitr:
   opts_chunk:

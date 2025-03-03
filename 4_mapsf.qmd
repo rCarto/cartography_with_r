@@ -1,0 +1,632 @@
+# `mapsf`  
+
+<img src='img/logo.png' align='right' width='120' />
+
+## Presentation 
+
+
+
+The spatial ecosystem of R is rich, dynamic and mature and several packages can be used to import, process and represent spatial data. The [`mapsf`](https://CRAN.R-project.org/package=mapsf) package [@R-mapsf] is a part of this ecosystem and can be used to create high-quality thematic maps.
+
+![A typical processing chain](img/workflow.png)
+
+
+:::{.callout-note}
+Other packages can be used to create thematic maps.  
+The `ggplot2` package [@R-ggplot2], in conjunction with the `ggspatial` package [@R-ggspatial], can be used to display spatial objects and create simple thematic maps.   
+The `tmap` package [@R-tmap] is dedicated to creating thematic maps, and uses a syntax similar to that of `ggplot2` (sequence of instructions combined with the `+` sign).   
+Documentation and tutorials for using these two packages are readily available on the web.
+:::
+
+In this document, we will mainly be using the `mapsf` package, which has fairly comprehensive functionality and is fairly easy to learn. What's more, the package is relatively lightweight.
+
+![A minimal number of well-known dependencies](img/deps.png)
+
+
+`mapsf` can be used to create most of the map types commonly used in statistical cartography (choropleth maps, typologies, proportional or graduated symbols, etc.).  
+For each type of map, a number of parameters can be used to customise the cartographic representation. These parameters are the same as those found in standard GIS or cartography software (for example, the choice of discretisations and colour palettes, changing the size of symbols or customising legends).  
+In addition to the data representation functions, other functions are dedicated to cartographic design (themes or graphic charters, legends, scales, orientation arrows, titles, credits, annotations, etc.), the creation of insets or map export.  
+
+**Documentation**
+
+::: {layout-ncol=2}
+
+[Website](https://riatelab.github.io/mapsf/) ![](img/webmapsf.png)
+
+
+[*cheat sheet*](https://raw.githubusercontent.com/riatelab/mapsf/master/vignettes/web_only/img/mapsf_cheatsheet.pdf) ![](img/mapsf_cheatsheet.png)
+
+
+**Vignettes** : 
+
+- [Get started](https://riatelab.github.io/mapsf/articles/mapsf.html)
+- [How to create faceted maps](https://riatelab.github.io/mapsf/articles/web_only/how_to_create_faceted_maps.html)
+- [How to create inset maps](https://riatelab.github.io/mapsf/articles/web_only/how_to_create_inset_maps.html)
+- [How to export maps](https://riatelab.github.io/mapsf/articles/web_only/how_to_export_maps.html)
+- [How to use a custom font family](https://riatelab.github.io/mapsf/articles/web_only/how_to_use_a_custom_font_family.html)
+- [How to use themes](https://riatelab.github.io/mapsf/articles/web_only/how_to_use_themes.html)
+
+:::
+
+
+
+
+## Map Types
+
+`mf_map()` is the main function of the package, it displays map layers on a georeferenced plot.
+
+`mf_map()` has three main arguments:
+
+* `x`, an sf object;
+* `var`, the name(s) of a variable(s) to map;
+* `type`, the map layer type.
+
+Many parameters are available to fine tune symbologies and legends.
+
+### Sample data set
+
+Import map layers from the [geopackage](https://www.geopackage.org/) file **lot.gpkg**.
+
+```{r}
+library(sf)
+# import municipalities
+mun <- st_read("data/lot.gpkg", layer = "communes", quiet = TRUE)
+# import french departements 
+dep <- st_read("data/lot.gpkg", layer = "departements", quiet = TRUE)
+# import restaurants
+resto <- st_read("data/lot.gpkg", layer = "restaurants", quiet = TRUE)
+# import someroads
+road <- st_read("data/lot.gpkg", layer = "routes", quiet = TRUE)
+```
+
+
+
+### Geometries / Base Maps
+
+`mf_map(x, type = "base")` displays `sf` objects geometries.
+
+```{r mf_base}
+library(mapsf)
+# polygones
+mf_map(x = mun, border = "white")
+# departements (polygones, transparent background)
+mf_map(x = dep, lwd = 2, col = NA, add = TRUE)
+# roads (polylines)
+mf_map(x = road, lwd = .7, col = "ivory4", add = TRUE)
+# restaurants (points)
+mf_map(x = resto, pch = 20, cex = .7, col = "darkred", add = TRUE)
+# title
+mf_title(txt = "Le Lot (46)")
+```
+
+### Proportional Symbols
+
+`mf_map(x, var, type = "prop")` displays symbols with areas proportional to a quantitative variable (stocks). The `inches` argument is used to customize the symbols sizes.
+
+```{r proportional_symbols}
+# plot municipalities 
+mf_map(x = mun)
+# proportional symbols
+mf_map(
+  x = mun, 
+  var = "POPULATION",
+  type = "prop",
+  leg_title = "Total Population\n(2015)"
+)
+# Titre
+mf_title("Population Distribution")
+```
+
+
+### Choropleth Map
+
+In choropleth maps, areas are shaded according to the variation of a quantitative variable. They are used to represent ratios or indices.
+`mf_map(x, var, type = "choro")` displays choropleth maps . Arguments `nbreaks`, and `breaks` allow to customize the variable classification. 
+
+
+```{r choro}
+# Population density (inhab./km²) using sf::st_area()
+mun$pop_density <- 1e6 * mun$POPULATION / as.numeric(st_area(mun))
+mf_map(
+  x = mun,
+  var = "pop_density",
+  type = "choro",
+  breaks = "quantile",
+  nbreaks = 6,
+  pal = "Dark Mint",
+  lwd = 1,
+  leg_title = "Population Density\n(inh./km²)", 
+  leg_val_rnd = 0
+)
+mf_title("Population Distribution (2018)")
+```
+
+
+
+:::{.callout-note}
+### Color palettes
+Color palettes, defined with `pal`, can be created with `mf_get_pal()` or you can use palette names from `hcl.pals()`.
+ 
+
+```{r pal1}
+#| layout-ncol: 2
+mf_map(x = mun, var = "pop_density", type = "choro",
+       breaks = "quantile", nbreaks = 4, 
+       pal = "Peach")
+mf_title("Named palette")
+ma_palette <- c("#F3CAD2", "#E08BB1", "#AF4F91", "#6D1C68")
+mf_map(x = mun, var = "pop_density", type = "choro",
+       breaks = "quantile", nbreaks = 4, 
+       pal = ma_palette)
+mf_title("Vector of colors")
+```
+
+
+![Builtin R color palettes](img/swatch-plot-1.svg)
+:::
+
+
+
+:::{.callout-note}
+### Classifications {#discretisation}
+Before creating a choropleth map, we must first study the statistical distribution of the variable we wish to map. 
+The `mf_distr()` function is used to visualise distributions. 
+
+```{r discr2}
+#| fig-width: 7
+#| fig-height: 5
+mf_distr(mun$pop_density)
+```
+This distribution is very skewed to the left.
+
+`mf_get_breaks()` can be used to classify continuous variables.
+Many classification methods are available ( "fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust", "bclust", "fisher", "jenks", "dpih", "q6", "Q6", geom", "arith", "em", "msd" or "ckmeans").
+
+Here, using the ‘geom’ method is quite appropriate.
+
+```{r discr3}
+#| fig-height: 6
+(bks <- mf_get_breaks(x = mun$pop_density, nbreaks = 5, breaks = "geom"))
+mf_map(
+  x = mun, var = "pop_density", type = "choro",
+  breaks = bks, pal = "Blues",
+  lwd = 1,
+  leg_title = "Population Density\n(inh./km²)", 
+  leg_val_rnd = 0
+)
+mf_title("Population Distribution (2018)")
+```
+:::
+
+
+
+### Typology Map
+
+`mf_map(x, var, type = "typo")` displays a typology map of a qualitative variable. `val_order` is used to set the modalities order in the legend.
+
+
+```{r typo_simple}
+mf_map(
+  x = mun,
+  var = "STATUT",
+  type = "typo",
+  pal = c("aquamarine4", "yellow3","wheat"),
+  lwd = .7,
+  leg_title = ""
+)
+mf_title("Municipality Administrative Status")
+```
+
+
+The `val_order` argument is used to order the modalities in the legend.
+
+```{r typo_order}
+mf_map(
+  x = mun,
+  var = "STATUT",
+  type = "typo",
+  pal = c("aquamarine4", "yellow3","wheat"),
+  val_order = c("Préfecture", "Sous-préfecture", "Commune simple"),
+  lwd = .7,
+  leg_title = ""
+)
+mf_title("Municipality Administrative Status")
+```
+
+
+
+### Proportional Symbols using Choropleth Coloration
+
+`mf_map(x, var, type = "prop_choro")` creates a map of symbols that are proportional to values of a first variable and colored to reflect the classification of a second variable.
+
+
+```{r choroprop}
+mf_map(x = mun)
+mf_map(
+  x = mun,
+  var = c("POPULATION", "pop_density"),
+  type = "prop_choro",
+  border = "grey50",
+  lwd = 1,
+  leg_title = c("Population", "Population Density\n(inh./km²)"),
+  breaks = "q6",
+  pal = "Magenta",
+  leg_val_rnd = c(0,1))
+mf_title("Population Distribution (2018)")
+```
+
+### Proportional Symbols using Typology Coloration
+
+`mf_map(x, var, type = "prop_typo")` creates a map of symbols that are proportional to values of a first variable and colored to reflect the modalities of a second qualitative variable.
+
+
+```{r typoprop}
+mf_map(x = mun)
+mf_map(
+  x = mun,
+  var = c("POPULATION", "STATUT"),
+  type = "prop_typo",
+  pal = c("aquamarine4", "yellow3","wheat"),
+  val_order = c("Préfecture", "Sous-préfecture", "Commune simple"),
+  leg_pos = "topleft",
+  leg_title = c("Population\n(2015)",
+                "Administrative Status"),
+)
+mf_title("Population Distribution (2018)")
+```
+
+
+
+## Map Layout
+
+
+### Titles, scale bar, North arrow, credits
+
+`mf_title()` displays a title.   
+`mf_arrow()` displays a North arrow.  
+`mf_scale()` displays a scale bar.      
+`mf_credits()` plots credits at the bottom of the map.     
+
+```{r title}
+mf_map(mun)
+mf_title("Title of the map")
+mf_scale(size = 20, lwd = 2, cex = 1.2)
+mf_arrow()
+mf_credits("Authors : TG & HP\nSources : IGN, 2018")
+```
+
+
+:::{.callout-note}
+#### `mf_layout()` combines these elements and add a complete layout to the map (title, credits, north arrow, scale bar).
+
+```{r layout1}
+mf_map(mun)
+mf_layout(
+  title = "Lot", 
+  credits = "Authors : TG & HP\nSources : IGN, 2018",
+  arrow = TRUE, 
+  scale = TRUE
+)
+```
+:::
+
+### Legends
+
+`mf_legend()` displays legends.
+
+```{r legends}
+mf_map(mun)
+mf_legend(
+  type = "prop", 
+  val = c(1000,500,200,10), 
+  inches = .4, 
+  pos = "topleft"
+)
+mf_legend(
+  type = "choro", 
+  val = c(0,10,20,30,40),
+  pal = "Greens", 
+  pos = "bottomright", 
+  val_rnd = 0
+)
+```
+
+:::{.callout-note}
+#### Interactive placement of layout elements
+Some layout elements can be positioned interactively on the map by using *"interactive"* as position. This applies to legends, north arrow, scale bar.
+
+[![](img/interactive.gif)]{.content-visible when-format="html"}
+:::
+
+
+### Labels and Annotations
+
+
+`mf_label()` is dedicated to the display of labels on a map. Use the `overlap = FALSE` argument to displays non overlapping labels.  
+
+`mf_annotation()` displays an annotation on a single spatial feature.
+
+
+```{r labs}
+# select a municipality
+cahors <- mun[mun$NOM_COM == "Cahors", ]
+# Select municipalities intersecting Cahors
+cahors_neighbors <- st_filter(x = mun, y = cahors, .predicate = st_intersects)
+mf_map(cahors_neighbors)
+mf_label(
+  x = cahors_neighbors,
+  var = "NOM_COM",
+  col= "black",
+  halo = TRUE,
+  overlap = FALSE, 
+  lines = FALSE
+)
+
+mf_annotation(
+  x =c(582000, 6369000), 
+  txt = "This place is\nvery specific", 
+  halo = TRUE, 
+  cex = 1.5
+)
+```
+
+
+
+
+### Center the map on a specific area
+
+
+The `mf_map()` function can start a map by centering it on a spatial object and setting transparent background and borders. 
+
+```{r init_map}
+mf_map(cahors_neighbors, col = NA, border = NA)
+mf_map(mun, add = TRUE)
+mf_map(mun, "POPULATION", "prop", leg_frame = TRUE)
+```
+
+
+
+
+### Display several maps on the same figure
+
+To plot several maps on the same figure, the user can use the `mfrow` argument of the `par()` function before plotting the maps. 
+For example, use `par(mfrow = c(1, 2))` (i.e. 1 row, 2 columns) to plot two maps side by side). 
+
+```{r mfrow0}
+#| fig-show: hold
+#| fig-width: 7
+#| fig-height: 3.5
+#| message: false
+# define the figure layout (1 row, 2 columns)
+opar <- par(mfrow = c(1, 2))
+# first map
+mf_map(mun)
+mf_map(mun, "TER_F", "prop", 
+       inches = .2,
+       val_max = 4000, 
+       leg_pos = "topleft", 
+       leg_title = "N.")
+mf_title("Tertiary: Women")
+# second map
+mf_map(mun)
+mf_map(mun, "TER_H", "prop",
+       inches = .2,
+       val_max = 4000, 
+       leg_pos = NA)
+mf_title("Men")
+par(opar)
+```
+
+### Export maps
+
+`mf_export()` exports maps in PNG or SVG formats.   
+The exported map width/height ratio will match the one of a spatial object.   
+If `width` is specified, then `height` is deduced from the width/height ratio of `x`, figure margins and title size.  
+If `height` is specified, then `width` is deduced from the width/height ratio of `x`, figure margins and title size. 
+
+
+:::{.callout-note}
+Always use `add = TRUE` after `mf_export()` and do not forget to add `dev.off()` at the end of the export. 
+:::
+
+```{r export, results='hide'}
+mf_export(
+  x = mun, 
+  filename = "img/mun_default.png",
+  width = 600
+)
+mf_map(mun, add = TRUE)
+mf_title("Lot")
+dev.off()
+
+```
+
+![](img/mun_default.png)
+
+
+In the following export we have added some space on the right side of the plot (50% of `x` width). 
+
+
+```{r export2, results="hide"}
+mf_export(
+  x = mun, 
+  filename = "img/mun_expand.png",
+  width = 600, 
+  expandBB = c(0, 0, 0, .5)
+)
+mf_map(mun, add = TRUE)
+mf_title("Le Lot")
+dev.off()
+```
+
+![](img/mun_expand.png)
+
+:::{.callout-note}
+#### Vignette
+[How to Export Maps](https://riatelab.github.io/mapsf/articles/web_only/how_to_export_maps.html)
+:::
+
+### Add an image on the map
+`readPNG()` from the `png` package can be used to add an image on a map.
+
+
+```{r logo}
+library(png)
+# image import
+logo <- readPNG("img/Logo CG 46 - Bleu.png")
+# image dimension
+pp <- dim(logo)[2:1] * 20
+# Coordinates of the topleft corner of com bounding box
+xy <- st_bbox(com)[c(1,4)]
+mf_map(com, col = "#D1914D", border = "white")
+rasterImage(
+  image   = logo,
+  xleft   = xy[1],
+  ybottom = xy[2] - pp[2],
+  xright  = xy[1] + pp[1],
+  ytop    = xy[2]
+)
+```
+
+
+### Add a shadow to a layer
+
+`mf_shadow()` plots the shadow of a polygon layer.
+
+```{r shadow}
+mf_shadow(com)
+mf_map(com, add=TRUE)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ## Exercice {.unnumbered} -->
+
+
+<!-- 1. Import the communes layer for the Lot department from the geopackage **lot.gpkg** file. -->
+
+<!-- 2. Import the **com.csv** file.    -->
+<!--   This dataset covers the communes of the Lot department and contains several additional variables:  -->
+<!--     - number of employees (**ACT**).  -->
+<!--     - number of people employed in industry (**IND**) -->
+<!--     - Number of people employed in the total population (**SACT**) -->
+<!--     - The share of industry workers in the total workforce (**SACT_IND**)  -->
+
+<!-- 3. Attach dataset and municipality layer.  -->
+
+<!-- 4. Create a map showing the active population working in industry.  -->
+
+<!-- 5. Add the necessary wrapping elements. -->
+
+<!-- 6. Use a custom theme. -->
+
+<!-- 7. Add a Lot location card. -->
+
+<!-- 8. Export the map in PNG format, 800 pixels wide.  -->
+
+<!-- 9. How can I make the map more intelligible? Get started! -->
+
+
+<!-- :::{.callout-note} -->
+<!-- You can use the file **exo_cartographie_mise_en_page.R** to guide you through this exercise.    -->
+<!-- ::: -->
+
+
+<!-- ## Exercice {.unnumbered} -->
+
+<!-- 1. Import the communes layer for the Lot department from the geopackage **lot.gpkg** file. -->
+
+
+<!-- 2. Import the **com.csv** file.    -->
+<!--   This dataset covers the communes of the Lot department and contains several additional variables:  -->
+<!--     - the number of employees (**ACT**).  -->
+<!--     - the number of people employed in industry (**IND**) -->
+<!--     - the share of the working population in the total population (**SACT**) -->
+<!--     - the share of the workforce in industry in the total workforce (**SACT_IND**)  -->
+
+
+<!-- 3. Attach the dataset and the municipalities layer.  -->
+
+
+<!-- 4. Create a map of the active population.   -->
+<!--   Which representation method should be used? What choices does this involve? -->
+
+
+<!-- 5. Create a map of the share of the working population in the total population.   -->
+<!--   What representation method should be used? What choices does this involve? -->
+
+
+<!-- :::{.callout-note} -->
+<!-- You can use the file **exo_cartographie_simple.R** to guide you through this exercise.    -->
+<!-- ::: -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ## Exercice {.unnumbered} -->
+
+<!-- 1. The data used in this document is stored in an RStudio project.  -->
+<!-- You must download it and unzip it on your machine. You will then be able to test all the operations proposed in this document within the **geodata** project.   -->
+<!-- [Download the project](https://rcarto.github.io/cartographie_avec_r/geodata.zip){.btn .btn-primary .btn-sm role=‘button’}   -->
+
+<!-- 2. We will mainly use the `mapsf` package.    -->
+<!-- Install it using the `install.packages()` function. -->
+
+<!-- 3. What is the version of the package? -->
+
+<!-- 4. What is new compared to the previous version? -->
+

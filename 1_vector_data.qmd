@@ -1,0 +1,226 @@
+---
+title: "Vector Data"
+cache: false
+---
+## `sf` package <img src='img/logo_sf.gif' align='right' width='120' />
+
+Package maintained by @R-sf. 
+
+
+![© Allison Horst, 2018](img/sf_nice.jpg)
+
+
+**Main features**:  
+
+* import / export
+* display
+* geoprocessing
+* support for unprojected data (on the globe)
+* use of the [*simple feature* standard](https://en.wikipedia.org/wiki/Simple_Features)
+- compatibility with the *pipe* operators (`|>` or `%>%`)  
+- compatibility with `tidyverse` operators. 
+
+
+
+## Resources
+
+::: {layout="[[1,1], [1,1]]"}
+
+![[Website](https://r-spatial.github.io/sf/)](img/sf_web.png)
+
+![[Cheat sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/4cfbc4c7ec5857b524473db219a1c4d402dd5e80/sf.pdf)](img/sf_cheatsheet.png)
+
+:::
+
+
+
+## `sf` format 
+
+:::{.callout-note}
+From [How simple features in R are organized](https://r-spatial.github.io/sf/articles/sf1.html#how-simple-features-in-r-are-organized) on `sf` website
+:::
+
+The three classes used to represent simple features are:
+
+* `sf`, the table (`data.frame`) with feature attributes and feature geometries, which contains
+* `sfc`, the list-column with the geometries for each feature (record), which is composed of
+* `sfg`, the feature geometry of an individual simple feature.
+
+![](img/sf.png)
+We see: 
+
+* in green a simple feature: a single record, or `data.frame` row, consisting of attributes and geometry
+* in blue a single simple feature geometry (an object of class `sfg`)
+* in red a simple feature list-column (an object of class `sfc`, which is a column in the `data.frame`)
+that although geometries are native R objects, they are printed as well-known text
+
+## Import and export
+
+The `st_read()` and `st_write()` functions can be used to import and export a wide range of file types.  
+
+### Import
+
+The `st_read()` function imports geographic layers in `sf` format.  
+The following lines import the layer of municipalities in the Lot department provided in the [geopackage](https://www.geopackage.org/) file **lot.gpkg**.
+
+```{r import}
+library(sf)
+mun <- st_read("data/lot.gpkg", layer = "communes")
+```
+
+```{r class_sf}
+class(mun)
+```
+
+::: {.callout-note}
+#### Geopackage
+The [geopackage](https://www.geopackage.org/) format lets you store multiple layers in a single file.   
+The `st_layers()` function provides an overview of the layers present in a geopackage file. 
+```{r st_layers}
+st_layers("data/lot.gpkg")
+```
+:::
+
+## Export
+
+The following lines export the **com** object to the **communes** layer of the **com.gpkg** geopackage in the **data** folder.   
+
+```{r export}
+#| eval: true
+st_write(obj = mun, dsn = "data/com.gpkg", layer = "communes")
+```
+
+```{r exportrue}
+#| echo: false
+#| results: hide
+file.remove("data/com.gpkg")
+```
+
+
+:::{.callout-note}
+#### More
+[Reading, Writing and Converting Simple Features](https://r-spatial.github.io/sf/articles/sf2.html), on `sf` website.
+:::
+
+## Explore and display
+
+### Overview of variables
+
+The `sf` objects **are** `data.frame`. We can use the `head()` or `summary()` functions.
+```{r explorxx}
+library(sf)
+mun <- st_read("data/lot.gpkg", layer = "communes", quiet = TRUE)
+head(mun, n = 3)
+summary(mun)
+```
+
+
+
+
+### Plot 
+
+Data overview with `plot()` :
+```{r affichage_complet}
+plot(mun)
+```
+
+Display a single variable: 
+```{r affi_geom2}
+plot(mun["POPULATION"])
+```
+
+Display geometry only:
+```{r affi_geom3}
+plot(st_geometry(mun), col = "ivory4", border = "ivory")
+```
+
+You can also use the `mapsf` package [@R-mapsf] to display `sf` objects.
+
+
+```{r affichage_mapsff}
+library(mapsf)
+mf_map(mun, col = "ivory4", border = "ivory")
+```
+
+
+## Coordinate Reference Systems (CRS)
+
+### Inspect the CRS of an `sf` object
+The `st_crs()` function lets you inspect the CRS used by an `sf` object.
+
+```{r proj1}
+library(sf) 
+st_crs(x = mun)
+```
+
+### Transform the CRS of an `sf` object
+
+The `st_transform()` function can be used to change the coordinate system of an `sf` object and reproject it. 
+
+```{r proj2}
+#| layout-ncol: 2
+#| fig-width: 4
+#| fig-height: 4
+mf_map(mun, expandBB = c(0, .12, 0, 0))
+mf_graticule(x = mun)
+mf_title("RGF93 / Lambert-93")
+# CRS change
+mun_reproj <- st_transform(x = mun, crs = "EPSG:3035")
+mf_map(mun_reproj, expandBB = c(0, .12, .0, 0))
+mf_graticule(x = mun_reproj)
+mf_title("ETRS89-extended / LAEA Europe")
+```
+
+
+:::{.callout-note}
+#### More
+[Coordinate reference systems conversion and transformation](https://r-spatial.github.io/sf/articles/sf3.html?q=coordinate#coordinate-reference-systems-conversion-and-transformation), on `sf` website.
+:::
+
+
+
+
+
+## Attribute selection and join 
+
+### Selection by attributes
+
+As `sf` objects are `data.frames`, we can select their rows and columns in the same way as `data.frames`. 
+
+```{r selectAttr}
+# row selection
+mun[1:2, ]
+mun[mun$NOM_COM == "Gramat", ]
+# column selection
+mun[, "POPULATION"]
+mun[mun$NOM_COM == "Gramat", 1:4]
+```
+
+
+### Attribute join
+
+We can join a `data.frame` and an `sf` object using `merge()` if they share a common identifier.   
+Be careful with the order of the arguments, as the object returned will be of the same type as `x`. It is not possible to make an attribute join using two `sf` objects.
+
+```{r jointAttr}
+# import additional data 
+mun_df <- read.csv(file = "data/com.csv")
+
+# common identifiers?
+names(mun_df)
+names(mun)
+
+
+# attribute join 
+mun_final <- merge(
+  x = mun, # the sf object
+  y = mun_df, # the data.frame
+  by.x = "INSEE_COM", # identifier in x
+  by.y = "INSEE_COM", # identifier in y
+  all.x = TRUE # keep all lines
+)
+
+# the two objects have been joined
+head(mun_final, 3)
+```
+

@@ -1,0 +1,135 @@
+---
+title: "Geoprocessing"
+---
+
+## Spatial selection and join
+
+### Spatial selection
+
+`st_filter()` function is used to perform spatial selections. 
+The `.predicate` argument lets you pick the selection criterion by using one of the "geometric predicate" functions (e.g. `st_intersects()`, `st_within()`, `st_crosses()`...).  
+Here, we'll select the roads that intersect the municipality of Gramat
+
+```{r sel_spat_inter}
+mun <- st_read("data/lot.gpkg", layer = "communes", quiet = TRUE)
+roads <- st_read("data/lot.gpkg", layer = "routes", quiet = TRUE)
+gramat <-  mun[mun$NOM_COM == "Gramat", ]
+
+road_gramat <-  st_filter(x = roads, 
+                          y = gramat,
+                          .predicate = st_intersects)
+
+# Plot     
+mf_map(gramat, col = "lightblue")
+mf_map(roads, add = TRUE)
+mf_map(road_gramat, col = "tomato", lwd = 2, add = TRUE)  
+```
+
+
+### Spatial join
+
+`st_join()` is used to perform spatial joins. 
+Use the `join` argument to select the geometric predicate.
+
+```{r intersects}
+road_gramat <-  st_join(x = roads,
+                         y = mun[, "INSEE_COM"],
+                         join = st_intersects,
+                         left = FALSE)
+road_gramat
+```
+
+## Geometrical operations
+
+### Centroids
+
+```{r centroid}
+mun_c <- st_centroid(mun)
+mf_map(mun)
+mf_map(mun_c, add = TRUE, cex = 1.2, col = "red", pch = 20)
+```
+
+
+### Aggregate polygons
+
+```{r aggreg}
+dep_46 <- st_union(mun)
+
+mf_map(mun, col = "lightblue")
+mf_map(dep_46, col = NA, border = "red", lwd = 2, add = TRUE)
+```
+
+### Aggregate polygons using a grouping variable
+
+```{r aggreg1}
+# Grouping variable
+i <- mun$STATUT 
+
+mun_u <- st_sf(
+  STATUT     = tapply(X = mun$STATUT     , INDEX = i, FUN = head, 1),
+  POPULATION = tapply(X = mun$POPULATION , INDEX = i, FUN = sum), 
+  geometry   = tapply(X = mun            , INDEX = i, FUN = st_union), 
+  crs        = st_crs(mun)
+) 
+```
+
+
+### Buffers
+
+`st_buffer()` is used to construct buffer zones.
+The distance is expressed in units of the projection (`st_crs(x)$units`).  
+
+```{r buffers}
+# Select a municipality
+gramat <- mun[mun$NOM_COM == "Gramat", ]
+
+gramat_b <- st_buffer(x = gramat, dist = 5000)
+
+mf_map(gramat_b, col = "lightblue", lwd=2, border = "red")
+mf_map(gramat, add = TRUE, lwd = 2)
+```
+
+### Intersection 
+
+Using `st_intersection()`, we can cut one layer by another. 
+
+```{r intersect2}
+# create a buffer zone around the centroid of Gramat
+zone <- st_geometry(gramat) |> 
+  st_centroid() |> 
+  st_buffer(10000)
+
+mf_map(mun)
+mf_map(zone, border = "red", col = NA, lwd = 2, add = TRUE)
+
+mun_z <- st_intersection(x = mun, y = zone)
+
+mf_map(mun)
+mf_map(mun_z, col = "red", border = "green", add = TRUE)
+mf_map(mun_z)
+```
+
+:::{.callout-note}
+In this example, we've used pipes (`|>`). Pipes are used to concatenate a sequence of instructions.
+:::
+
+
+
+### Simplifier des géométries
+<img src="img/logo_rmapshapper.png" align="right" width="150"/>
+The `rmapshaper` package [@R-mapshaper] builds on the Mapshaper JavaScript library [@JS-mapshaper] to offer several topology-friendly methods for simplifying geometries.  
+The `keep` argument is used to indicate the level of simplification. The `keep_shapes` argument is used to keep all polygons when the simplification level is high. 
+
+```{r mapshapper}
+#| layout-ncol: 3
+library("rmapshaper")
+mun_simp1 <- ms_simplify(mun, keep = 0.01 , keep_shapes = TRUE)
+mun_simp2 <- ms_simplify(mun, keep = 0.001, keep_shapes = TRUE)
+mf_map(mun)
+mf_map(mun_simp1)
+mf_map(mun_simp2)
+```
+
+
+
+
