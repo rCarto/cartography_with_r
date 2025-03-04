@@ -340,6 +340,19 @@ div.csl-indent {
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Exercice">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Install the <code>sf</code> package.</p>
+</div>
+</div>
 </section>
 <section id="sf-format" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="sf-format"><span class="header-section-number">2.3</span> <code>sf</code> format</h2>
@@ -372,7 +385,7 @@ div.csl-indent {
 <section id="import" class="level3" data-number="2.4.1">
 <h3 data-number="2.4.1" class="anchored" data-anchor-id="import"><span class="header-section-number">2.4.1</span> Import</h3>
 <p>The <code>st_read()</code> function imports geographic layers in <code>sf</code> format.<br>
-The following lines import the layer of municipalities in the Lot department provided in the <a href="https://www.geopackage.org/">geopackage</a> file <strong>lot.gpkg</strong>.</p>
+The following lines import the layer of municipalities in the Lot department provided in the geopackage file <strong>lot.gpkg</strong>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -396,7 +409,7 @@ The following lines import the layer of municipalities in the Lot department pro
 <pre><code>#&gt; [1] "sf"         "data.frame"</code></pre>
 </div>
 </div>
-<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="Geopackage">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -448,6 +461,19 @@ More
 <p><a href="https://r-spatial.github.io/sf/articles/sf2.html">Reading, Writing and Converting Simple Features</a>, on <code>sf</code> website.</p>
 </div>
 </div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Exercice">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Import municipalities.</p>
+</div>
+</div>
 </section>
 <section id="explore-and-display" class="level2" data-number="2.6">
 <h2 data-number="2.6" class="anchored" data-anchor-id="explore-and-display"><span class="header-section-number">2.6</span> Explore and display</h2>
@@ -473,44 +499,13 @@ More
 #&gt; 2 0.000000  4.794521     0  4.794521  9.589041 MULTIPOLYGON (((605540.7 64...
 #&gt; 3 5.209841 10.419682     0 57.308249 78.147612 MULTIPOLYGON (((593707.7 64...</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mun)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt;   INSEE_COM           NOM_COM             STATUT            POPULATION     
-#&gt;  Length:313         Length:313         Length:313         Min.   :   49.0  
-#&gt;  Class :character   Class :character   Class :character   1st Qu.:  172.0  
-#&gt;  Mode  :character   Mode  :character   Mode  :character   Median :  300.0  
-#&gt;                                                           Mean   :  555.7  
-#&gt;                                                           3rd Qu.:  529.0  
-#&gt;                                                           Max.   :19907.0  
-#&gt;      AGR_H            AGR_F            IND_H             IND_F        
-#&gt;  Min.   : 0.000   Min.   : 0.000   Min.   :  0.000   Min.   :  0.000  
-#&gt;  1st Qu.: 0.000   1st Qu.: 0.000   1st Qu.:  4.843   1st Qu.:  0.000  
-#&gt;  Median : 5.000   Median : 0.000   Median :  5.516   Median :  4.943  
-#&gt;  Mean   : 6.935   Mean   : 2.594   Mean   : 16.395   Mean   :  7.635  
-#&gt;  3rd Qu.:10.013   3rd Qu.: 5.000   3rd Qu.: 19.715   3rd Qu.:  9.905  
-#&gt;  Max.   :56.179   Max.   :24.641   Max.   :602.867   Max.   :184.016  
-#&gt;      BTP_H             BTP_F             TER_H             TER_F        
-#&gt;  Min.   :  0.000   Min.   : 0.0000   Min.   :   0.00   Min.   :   0.00  
-#&gt;  1st Qu.:  0.000   1st Qu.: 0.0000   1st Qu.:  10.00   1st Qu.:  15.15  
-#&gt;  Median :  5.000   Median : 0.0000   Median :  20.00   Median :  30.26  
-#&gt;  Mean   :  9.572   Mean   : 0.9723   Mean   :  42.17   Mean   :  60.77  
-#&gt;  3rd Qu.: 10.329   3rd Qu.: 0.0000   3rd Qu.:  44.69   3rd Qu.:  63.95  
-#&gt;  Max.   :203.122   Max.   :16.9238   Max.   :1778.87   Max.   :2397.18  
-#&gt;             geom    
-#&gt;  MULTIPOLYGON :313  
-#&gt;  epsg:2154    :  0  
-#&gt;  +proj=lcc ...:  0  
-#&gt;                     
-#&gt;                     
-#&gt; </code></pre>
-</div>
 </div>
 </section>
 <section id="plot" class="level3" data-number="2.6.2">
 <h3 data-number="2.6.2" class="anchored" data-anchor-id="plot"><span class="header-section-number">2.6.2</span> Plot</h3>
 <p>Data overview with <code>plot()</code> :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mun)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mun)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>#&gt; Warning: plotting the first 9 out of 12 attributes; use max.plot = 12 to plot
 #&gt; all</code></pre>
@@ -525,7 +520,7 @@ More
 </div>
 <p>Display a single variable:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mun[<span class="st">"POPULATION"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mun[<span class="st">"POPULATION"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -536,7 +531,7 @@ More
 </div>
 <p>Display geometry only:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mun), <span class="at">col =</span> <span class="st">"ivory4"</span>, <span class="at">border =</span> <span class="st">"ivory"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mun), <span class="at">col =</span> <span class="st">"ivory4"</span>, <span class="at">border =</span> <span class="st">"ivory"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -547,14 +542,33 @@ More
 </div>
 <p>You can also use the <code>mapsf</code> package <span class="citation" data-cites="R-mapsf">(<a href="2000_references.html#ref-R-mapsf" role="doc-biblioref">Giraud 2023</a>)</span> to display <code>sf</code> objects.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapsf)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(mun, <span class="at">col =</span> <span class="st">"ivory4"</span>, <span class="at">border =</span> <span class="st">"ivory"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapsf)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(mun, <span class="at">col =</span> <span class="st">"ivory4"</span>, <span class="at">border =</span> <span class="st">"ivory"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
 <p><img src="figs/affichage_mapsff-1.png" class="img-fluid figure-img" width="576"></p>
 </figure>
 </div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Exercice">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Plot municpalities with <code>sf</code>. The filling color must be blue and borders must be thick.</li>
+<li>Plot municipalities with <code>mapsf</code>. The filling color must be lightgreen and borders must be white and thin.</li>
+<li>Add the restaurants to the municpalities map.</li>
+<li>How many municipalities are there?</li>
+<li>Which commune has the largest population?</li>
+</ol>
 </div>
 </div>
 </section>
@@ -565,8 +579,8 @@ More
 <h3 data-number="2.7.1" class="anchored" data-anchor-id="inspect-the-crs-of-an-sf-object"><span class="header-section-number">2.7.1</span> Inspect the CRS of an <code>sf</code> object</h3>
 <p>The <code>st_crs()</code> function lets you inspect the CRS used by an <code>sf</code> object.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf) </span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(<span class="at">x =</span> mun)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf) </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(<span class="at">x =</span> mun)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; Coordinate Reference System:
 #&gt;   User input: RGF93 v1 / Lambert-93 
@@ -618,14 +632,14 @@ More
 <section id="transform-the-crs-of-an-sf-object" class="level3" data-number="2.7.2">
 <h3 data-number="2.7.2" class="anchored" data-anchor-id="transform-the-crs-of-an-sf-object"><span class="header-section-number">2.7.2</span> Transform the CRS of an <code>sf</code> object</h3>
 <p>The <code>st_transform()</code> function can be used to change the coordinate system of an <code>sf</code> object and reproject it.</p>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(mun, <span class="at">expandBB =</span> <span class="fu">c</span>(<span class="dv">0</span>, .<span class="dv">12</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_graticule</span>(<span class="at">x =</span> mun)</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"RGF93 / Lambert-93"</span>)</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># CRS change</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>mun_reproj <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(<span class="at">x =</span> mun, <span class="at">crs =</span> <span class="st">"EPSG:3035"</span>)</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(mun_reproj, <span class="at">expandBB =</span> <span class="fu">c</span>(<span class="dv">0</span>, .<span class="dv">12</span>, .<span class="dv">0</span>, <span class="dv">0</span>))</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_graticule</span>(<span class="at">x =</span> mun_reproj)</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"ETRS89-extended / LAEA Europe"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(mun, <span class="at">expandBB =</span> <span class="fu">c</span>(<span class="dv">0</span>, .<span class="dv">12</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_graticule</span>(<span class="at">x =</span> mun)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"RGF93 / Lambert-93"</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># CRS change</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>mun_reproj <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(<span class="at">x =</span> mun, <span class="at">crs =</span> <span class="st">"EPSG:3035"</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(mun_reproj, <span class="at">expandBB =</span> <span class="fu">c</span>(<span class="dv">0</span>, .<span class="dv">12</span>, .<span class="dv">0</span>, <span class="dv">0</span>))</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_graticule</span>(<span class="at">x =</span> mun_reproj)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"ETRS89-extended / LAEA Europe"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell quarto-layout-panel" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
@@ -657,8 +671,8 @@ More
 <h3 data-number="2.8.1" class="anchored" data-anchor-id="selection-by-attributes"><span class="header-section-number">2.8.1</span> Selection by attributes</h3>
 <p>As <code>sf</code> objects are <code>data.frames</code>, we can select their rows and columns in the same way as <code>data.frames</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># row selection</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>mun[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># row selection</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>mun[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; Simple feature collection with 2 features and 12 fields
 #&gt; Geometry type: MULTIPOLYGON
@@ -672,7 +686,7 @@ More
 #&gt; 1 9.957527     0 44.917145 34.681799 MULTIPOLYGON (((559262 6371...
 #&gt; 2 4.794521     0  4.794521  9.589041 MULTIPOLYGON (((605540.7 64...</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>mun[mun<span class="sc">$</span>NOM_COM <span class="sc">==</span> <span class="st">"Gramat"</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>mun[mun<span class="sc">$</span>NOM_COM <span class="sc">==</span> <span class="st">"Gramat"</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; Simple feature collection with 1 feature and 12 fields
 #&gt; Geometry type: MULTIPOLYGON
@@ -684,8 +698,8 @@ More
 #&gt;        IND_F    BTP_H BTP_F    TER_H    TER_F                           geom
 #&gt; 119 107.0862 56.09275     0 260.0664 304.1941 MULTIPOLYGON (((594713.1 64...</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># column selection</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>mun[, <span class="st">"POPULATION"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># column selection</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>mun[, <span class="st">"POPULATION"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; Simple feature collection with 313 features and 1 field
 #&gt; Geometry type: MULTIPOLYGON
@@ -705,7 +719,7 @@ More
 #&gt; 9         642 MULTIPOLYGON (((612729.6 63...
 #&gt; 10        367 MULTIPOLYGON (((581404 6370...</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>mun[mun<span class="sc">$</span>NOM_COM <span class="sc">==</span> <span class="st">"Gramat"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>mun[mun<span class="sc">$</span>NOM_COM <span class="sc">==</span> <span class="st">"Gramat"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; Simple feature collection with 1 feature and 4 fields
 #&gt; Geometry type: MULTIPOLYGON
@@ -722,31 +736,31 @@ More
 <p>We can join a <code>data.frame</code> and an <code>sf</code> object using <code>merge()</code> if they share a common identifier.<br>
 Be careful with the order of the arguments, as the object returned will be of the same type as <code>x</code>. It is not possible to make an attribute join using two <code>sf</code> objects.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import additional data </span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>mun_df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/com.csv"</span>)</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># common identifiers?</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(mun_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import additional data </span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>mun_df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/com.csv"</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># common identifiers?</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(mun_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "INSEE_COM" "ACT"       "IND"       "SACT"      "SACT_IND"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(mun)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(mun)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt;  [1] "INSEE_COM"  "NOM_COM"    "STATUT"     "POPULATION" "AGR_H"     
 #&gt;  [6] "AGR_F"      "IND_H"      "IND_F"      "BTP_H"      "BTP_F"     
 #&gt; [11] "TER_H"      "TER_F"      "geom"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># attribute join </span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>mun_final <span class="ot">&lt;-</span> <span class="fu">merge</span>(</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> mun, <span class="co"># the sf object</span></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> mun_df, <span class="co"># the data.frame</span></span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">by.x =</span> <span class="st">"INSEE_COM"</span>, <span class="co"># identifier in x</span></span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">by.y =</span> <span class="st">"INSEE_COM"</span>, <span class="co"># identifier in y</span></span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">all.x =</span> <span class="cn">TRUE</span> <span class="co"># keep all lines</span></span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="co"># the two objects have been joined</span></span>
-<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mun_final, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># attribute join </span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>mun_final <span class="ot">&lt;-</span> <span class="fu">merge</span>(</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> mun, <span class="co"># the sf object</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> mun_df, <span class="co"># the data.frame</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">by.x =</span> <span class="st">"INSEE_COM"</span>, <span class="co"># identifier in x</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">by.y =</span> <span class="st">"INSEE_COM"</span>, <span class="co"># identifier in y</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">all.x =</span> <span class="cn">TRUE</span> <span class="co"># keep all lines</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="co"># the two objects have been joined</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mun_final, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; Simple feature collection with 3 features and 16 fields
 #&gt; Geometry type: MULTIPOLYGON
@@ -765,6 +779,30 @@ Be careful with the order of the arguments, as the object returned will be of th
 #&gt; 1 4.962393 MULTIPOLYGON (((559262 6371...
 #&gt; 2 0.000000 MULTIPOLYGON (((605540.7 64...
 #&gt; 3 9.090909 MULTIPOLYGON (((593707.7 64...</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Exercice">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Import the <strong>com.csv</strong> file. This dataset covers all municipalities and includes several additional variables:
+<ul>
+<li>working population (ACT)</li>
+<li>working population in the industrial sector (IND)</li>
+<li>working population as a percentage of total population (SACT)</li>
+<li>share of the working population working in the industrial sector (SACT_IND)</li>
+</ul></li>
+<li>Join this dataset to the municipality layer.</li>
+<li>Extract municipalities with more than 500 active workers and whose share of active workers in the total population is greater than 30%.</li>
+<li>Plot a map with all municipalities in gray and selected municipalities in red.</li>
+</ol>
 </div>
 </div>
 

@@ -6,14 +6,12 @@
 ![Map semiology decision tree](img/lightsemio.png)
 
 
-## Exercice {.unnumbered}
+::: {.callout-tip icon=true appearance=default title="Exercice"}
+How to represent the following variables:
 
-How to represent the following variables :
-
-* A municipal population
-* A median age by department
-* A growth rate
-* The administrative status of a commune (prefecture, sub-prefecture, simple commune, etc.)
-* Life expectancy per country
-
-
+  * A municipal populatio
+  * A median age by region
+  * A population growth rate
+  * The administrative status of municipalities
+  * Life expectancy per country  
+:::

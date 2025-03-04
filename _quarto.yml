@@ -26,8 +26,10 @@ book:
       orcid: 0000-0001-5679-6536
       url: https://rcarto.github.io
       affiliation:
-          name: RIATE (CNRS)
+          name: Center for Spatial Analysis and Geovizualization
           url: https://riate.cnrs.fr
+          department: UAR RIATE
+          group: CNRS
   date: today
   date-format: long
   search: true

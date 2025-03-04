@@ -1,15 +1,26 @@
 # *Preamble* {.unnumbered}
 
-The aim of this document is to provide support for learning thematic mapping with R. 
+Process spatial data and create reproducible maps with R. 
+
+Topics covered:  
+
+- The R Spatial ecosystem
+- Spatial data manipulation
+- Thematic cartography and graphic semiology
+- Maps with R
+- Map layout and map export
 
 **How to use the manual**    
-The data used in this document is stored in an RStudio project. 
+Datasets used in this document are stored in an RStudio project. 
 You need to download it and unzip it on your machine. You will then be able to test all data processing proposed in this document using the **geodata** project.  
 [Download project](https://rcarto.github.io/cartographie_avec_r/geodata.zip){.btn .btn-primary .btn-sm role=“button”}  
 
 **Contribution and feedback**    
-You can send us your comments and suggestions by [posting an *issue*](https://github.com/rCarto/cartography_with_r/issues) on the [GitHub repository](https://github.com/rCarto/cartography_with_r) of this document. 
+You can send your comments and suggestions by [posting an *issue*](https://github.com/rCarto/cartography_with_r/issues) on the [GitHub repository](https://github.com/rCarto/cartography_with_r) of this document. 
 
 
 **Context**  
 This document is an extract and a translation of [Cartographie avec R](https://rcarto.github.io/cartographie_avec_r/) [-@cartowithr] and [Géomatique avec R](https://rcarto.github.io/geomatique_avec_r/) [-@geowithr].
+
+
+<br><br>![](img/logo_footer.svg){height=60px fi-align="center"}

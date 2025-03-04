@@ -6,7 +6,7 @@ title: "Geoprocessing"
 
 ### Spatial selection
 
-`st_filter()` function is used to perform spatial selections. 
+`st_filter()` is used to perform spatial selections. 
 The `.predicate` argument lets you pick the selection criterion by using one of the "geometric predicate" functions (e.g. `st_intersects()`, `st_within()`, `st_crosses()`...).  
 Here, we'll select the roads that intersect the municipality of Gramat
 
@@ -18,8 +18,8 @@ gramat <-  mun[mun$NOM_COM == "Gramat", ]
 road_gramat <-  st_filter(x = roads, 
                           y = gramat,
                           .predicate = st_intersects)
-
-# Plot     
+# Plot
+library(mapsf)
 mf_map(gramat, col = "lightblue")
 mf_map(roads, add = TRUE)
 mf_map(road_gramat, col = "tomato", lwd = 2, add = TRUE)  
@@ -38,6 +38,16 @@ road_gramat <-  st_join(x = roads,
                          left = FALSE)
 road_gramat
 ```
+
+
+::: {.callout-tip icon=true appearance=default title="Exercice"}
+1. Import the layers of municipalities and restaurants.
+2. Perform a spatial join to find the name and identifier of the municipality where each restaurant is located.
+:::
+
+
+
+
 
 ## Geometrical operations
 
@@ -115,7 +125,60 @@ In this example, we've used pipes (`|>`). Pipes are used to concatenate a sequen
 
 
 
-### Simplifier des géométries
+### Regular grid
+
+`st_make_grid()` is used to create a regular grid. It produces an `sfc` object, and then you need to use `st_sf()` to transform this `sfc` object into an `sf` object.
+We also add a column of unique identifiers.
+
+```{r grid}
+# create a grid
+grid <- st_make_grid(x = mun, cellsize = 5000)
+
+# transform to sf, add identifier
+grid <- st_sf(ID = 1:length(grid), geom = grid)
+
+mf_map(grid, col = "grey", border = "white")
+mf_map(mun, col = NA, border = "grey50", add = TRUE)
+```
+
+
+
+### Counting points in polygons
+
+Select the grid tiles which intersect the department with `st_filter()`.
+
+```{r intersect3.1, nm=TRUE}
+grid <- st_filter(grid, dep_46, .predicate = st_intersects)
+
+# Import restaurants
+restaurant <- st_read("data/lot.gpkg", layer = "restaurants", quiet = TRUE)
+
+mf_map(grid, col = "grey", border = "white")
+mf_map(restaurant, pch = 20, col = "red", cex = .5, add = TRUE)
+```
+
+We then use `st_intersects(..., sparse = TRUE)`, which will produce a list of the elements of the restaurant object inside each element of the grid object (via their indexes).
+
+```{r intersect3.2, nm=TRUE}
+inter <- st_intersects(grid, restaurant, sparse = TRUE)
+
+length(inter) == nrow(grid)
+```
+
+
+To count the number of restaurants, all we need to do is report the length of each of the elements in this list.
+
+```{r intersect3.4}
+grid$nb_restaurant <- lengths(inter)
+
+mf_map(grid)
+mf_map(grid, var = "nb_restaurant", type = "prop")
+```
+
+
+
+
+### Geometries simplification
 <img src="img/logo_rmapshapper.png" align="right" width="150"/>
 The `rmapshaper` package [@R-mapshaper] builds on the Mapshaper JavaScript library [@JS-mapshaper] to offer several topology-friendly methods for simplifying geometries.  
 The `keep` argument is used to indicate the level of simplification. The `keep_shapes` argument is used to keep all polygons when the simplification level is high. 
@@ -132,4 +195,8 @@ mf_map(mun_simp2)
 
 
 
-
+::: {.callout-tip icon=true appearance=default title="Exercice"}
+1. Compute the number of restaurants per municipality.
+2. Which municipalities have more than 10 restaurants and fewer than 1000 inhabitants?
+3. Create a map showing all the municipalities in grey and the municipalities selected above in red.
+:::

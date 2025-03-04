@@ -260,7 +260,9 @@ div.csl-indent {
   <li><a href="#aggregate-polygons-using-a-grouping-variable" id="toc-aggregate-polygons-using-a-grouping-variable" class="nav-link" data-scroll-target="#aggregate-polygons-using-a-grouping-variable"><span class="header-section-number">3.2.3</span> Aggregate polygons using a grouping variable</a></li>
   <li><a href="#buffers" id="toc-buffers" class="nav-link" data-scroll-target="#buffers"><span class="header-section-number">3.2.4</span> Buffers</a></li>
   <li><a href="#intersection" id="toc-intersection" class="nav-link" data-scroll-target="#intersection"><span class="header-section-number">3.2.5</span> Intersection</a></li>
-  <li><a href="#simplifier-des-géométries" id="toc-simplifier-des-géométries" class="nav-link" data-scroll-target="#simplifier-des-géométries"><span class="header-section-number">3.2.6</span> Simplifier des géométries</a></li>
+  <li><a href="#regular-grid" id="toc-regular-grid" class="nav-link" data-scroll-target="#regular-grid"><span class="header-section-number">3.2.6</span> Regular grid</a></li>
+  <li><a href="#counting-points-in-polygons" id="toc-counting-points-in-polygons" class="nav-link" data-scroll-target="#counting-points-in-polygons"><span class="header-section-number">3.2.7</span> Counting points in polygons</a></li>
+  <li><a href="#geometries-simplification" id="toc-geometries-simplification" class="nav-link" data-scroll-target="#geometries-simplification"><span class="header-section-number">3.2.8</span> Geometries simplification</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -291,7 +293,7 @@ div.csl-indent {
 <h2 data-number="3.1" class="anchored" data-anchor-id="spatial-selection-and-join"><span class="header-section-number">3.1</span> Spatial selection and join</h2>
 <section id="spatial-selection" class="level3" data-number="3.1.1">
 <h3 data-number="3.1.1" class="anchored" data-anchor-id="spatial-selection"><span class="header-section-number">3.1.1</span> Spatial selection</h3>
-<p><code>st_filter()</code> function is used to perform spatial selections. The <code>.predicate</code> argument lets you pick the selection criterion by using one of the “geometric predicate” functions (e.g.&nbsp;<code>st_intersects()</code>, <code>st_within()</code>, <code>st_crosses()</code>…).<br>
+<p><code>st_filter()</code> is used to perform spatial selections. The <code>.predicate</code> argument lets you pick the selection criterion by using one of the “geometric predicate” functions (e.g.&nbsp;<code>st_intersects()</code>, <code>st_within()</code>, <code>st_crosses()</code>…).<br>
 Here, we’ll select the roads that intersect the municipality of Gramat</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>mun <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/lot.gpkg"</span>, <span class="at">layer =</span> <span class="st">"communes"</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
@@ -301,8 +303,8 @@ Here, we’ll select the roads that intersect the municipality of Gramat</p>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>road_gramat <span class="ot">&lt;-</span>  <span class="fu">st_filter</span>(<span class="at">x =</span> roads, </span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                          <span class="at">y =</span> gramat,</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">.predicate =</span> st_intersects)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot     </span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapsf)</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(gramat, <span class="at">col =</span> <span class="st">"lightblue"</span>)</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(roads, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(road_gramat, <span class="at">col =</span> <span class="st">"tomato"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -342,6 +344,22 @@ Here, we’ll select the roads that intersect the municipality of Gramat</p>
 #&gt; 7.1  7 Départementale     46138 LINESTRING (598887.3 639763...
 #&gt; 7.2  7 Départementale     46233 LINESTRING (598887.3 639763...
 #&gt; 8    8 Départementale     46090 LINESTRING (601184.3 639697...</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Exercice">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Import the layers of municipalities and restaurants.</li>
+<li>Perform a spatial join to find the name and identifier of the municipality where each restaurant is located.</li>
+</ol>
 </div>
 </div>
 </section>
@@ -468,16 +486,83 @@ Here, we’ll select the roads that intersect the municipality of Gramat</p>
 </div>
 </div>
 </section>
-<section id="simplifier-des-géométries" class="level3" data-number="3.2.6">
-<h3 data-number="3.2.6" class="anchored" data-anchor-id="simplifier-des-géométries"><span class="header-section-number">3.2.6</span> Simplifier des géométries</h3>
+<section id="regular-grid" class="level3" data-number="3.2.6">
+<h3 data-number="3.2.6" class="anchored" data-anchor-id="regular-grid"><span class="header-section-number">3.2.6</span> Regular grid</h3>
+<p><code>st_make_grid()</code> is used to create a regular grid. It produces an <code>sfc</code> object, and then you need to use <code>st_sf()</code> to transform this <code>sfc</code> object into an <code>sf</code> object. We also add a column of unique identifiers.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a grid</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">st_make_grid</span>(<span class="at">x =</span> mun, <span class="at">cellsize =</span> <span class="dv">5000</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># transform to sf, add identifier</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">st_sf</span>(<span class="at">ID =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(grid), <span class="at">geom =</span> grid)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(grid, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">border =</span> <span class="st">"white"</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(mun, <span class="at">col =</span> <span class="cn">NA</span>, <span class="at">border =</span> <span class="st">"grey50"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="figs/grid-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="counting-points-in-polygons" class="level3" data-number="3.2.7">
+<h3 data-number="3.2.7" class="anchored" data-anchor-id="counting-points-in-polygons"><span class="header-section-number">3.2.7</span> Counting points in polygons</h3>
+<p>Select the grid tiles which intersect the department with <code>st_filter()</code>.</p>
+<div class="cell" data-nm="true">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">st_filter</span>(grid, dep_46, <span class="at">.predicate =</span> st_intersects)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Import restaurants</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>restaurant <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/lot.gpkg"</span>, <span class="at">layer =</span> <span class="st">"restaurants"</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(grid, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">border =</span> <span class="st">"white"</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(restaurant, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">cex =</span> .<span class="dv">5</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="figs/intersect3.1-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We then use <code>st_intersects(..., sparse = TRUE)</code>, which will produce a list of the elements of the restaurant object inside each element of the grid object (via their indexes).</p>
+<div class="cell" data-nm="true">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>inter <span class="ot">&lt;-</span> <span class="fu">st_intersects</span>(grid, restaurant, <span class="at">sparse =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(inter) <span class="sc">==</span> <span class="fu">nrow</span>(grid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] TRUE</code></pre>
+</div>
+</div>
+<p>To count the number of restaurants, all we need to do is report the length of each of the elements in this list.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">$</span>nb_restaurant <span class="ot">&lt;-</span> <span class="fu">lengths</span>(inter)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(grid)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(grid, <span class="at">var =</span> <span class="st">"nb_restaurant"</span>, <span class="at">type =</span> <span class="st">"prop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; 94 '0' values are not plotted on the map.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="figs/intersect3.4-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="geometries-simplification" class="level3" data-number="3.2.8">
+<h3 data-number="3.2.8" class="anchored" data-anchor-id="geometries-simplification"><span class="header-section-number">3.2.8</span> Geometries simplification</h3>
 <p><img src="img/logo_rmapshapper.png" align="right" width="150"> The <code>rmapshaper</code> package <span class="citation" data-cites="R-mapshaper">(<a href="2000_references.html#ref-R-mapshaper" role="doc-biblioref">Teucher and Russell 2023</a>)</span> builds on the Mapshaper JavaScript library <span class="citation" data-cites="JS-mapshaper">(<a href="2000_references.html#ref-JS-mapshaper" role="doc-biblioref">Bloch 2013</a>)</span> to offer several topology-friendly methods for simplifying geometries.<br>
 The <code>keep</code> argument is used to indicate the level of simplification. The <code>keep_shapes</code> argument is used to keep all polygons when the simplification level is high.</p>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"rmapshaper"</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>mun_simp1 <span class="ot">&lt;-</span> <span class="fu">ms_simplify</span>(mun, <span class="at">keep =</span> <span class="fl">0.01</span> , <span class="at">keep_shapes =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>mun_simp2 <span class="ot">&lt;-</span> <span class="fu">ms_simplify</span>(mun, <span class="at">keep =</span> <span class="fl">0.001</span>, <span class="at">keep_shapes =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(mun)</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(mun_simp1)</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(mun_simp2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"rmapshaper"</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>mun_simp1 <span class="ot">&lt;-</span> <span class="fu">ms_simplify</span>(mun, <span class="at">keep =</span> <span class="fl">0.01</span> , <span class="at">keep_shapes =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>mun_simp2 <span class="ot">&lt;-</span> <span class="fu">ms_simplify</span>(mun, <span class="at">keep =</span> <span class="fl">0.001</span>, <span class="at">keep_shapes =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(mun)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(mun_simp1)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(mun_simp2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell quarto-layout-panel" data-layout-ncol="3">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
@@ -489,6 +574,23 @@ The <code>keep</code> argument is used to indicate the level of simplification. 
 <div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
 <p><img src="figs/mapshapper-3.png" class="img-fluid" width="576"></p>
 </div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Exercice">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Compute the number of restaurants per municipality.</li>
+<li>Which municipalities have more than 10 restaurants and fewer than 1000 inhabitants?</li>
+<li>Create a map showing all the municipalities in grey and the municipalities selected above in red.</li>
+</ol>
 </div>
 </div>
 

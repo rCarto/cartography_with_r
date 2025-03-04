@@ -34,6 +34,13 @@ Package maintained by @R-sf.
 
 
 
+::: {.callout-tip icon=true appearance=default title="Exercice"}
+Install the `sf` package.
+:::
+
+
+
+
 ## `sf` format 
 
 :::{.callout-note}
@@ -61,7 +68,7 @@ The `st_read()` and `st_write()` functions can be used to import and export a wi
 ### Import
 
 The `st_read()` function imports geographic layers in `sf` format.  
-The following lines import the layer of municipalities in the Lot department provided in the [geopackage](https://www.geopackage.org/) file **lot.gpkg**.
+The following lines import the layer of municipalities in the Lot department provided in the geopackage file **lot.gpkg**.
 
 ```{r import}
 library(sf)
@@ -72,8 +79,7 @@ mun <- st_read("data/lot.gpkg", layer = "communes")
 class(mun)
 ```
 
-::: {.callout-note}
-#### Geopackage
+::: {.callout-note title=Geopackage}
 The [geopackage](https://www.geopackage.org/) format lets you store multiple layers in a single file.   
 The `st_layers()` function provides an overview of the layers present in a geopackage file. 
 ```{r st_layers}
@@ -102,6 +108,17 @@ file.remove("data/com.gpkg")
 [Reading, Writing and Converting Simple Features](https://r-spatial.github.io/sf/articles/sf2.html), on `sf` website.
 :::
 
+
+
+
+
+::: {.callout-tip icon=true appearance=default title="Exercice"}
+Import municipalities.
+:::
+
+
+
+
 ## Explore and display
 
 ### Overview of variables
@@ -111,7 +128,6 @@ The `sf` objects **are** `data.frame`. We can use the `head()` or `summary()` fu
 library(sf)
 mun <- st_read("data/lot.gpkg", layer = "communes", quiet = TRUE)
 head(mun, n = 3)
-summary(mun)
 ```
 
 
@@ -141,6 +157,17 @@ You can also use the `mapsf` package [@R-mapsf] to display `sf` objects.
 library(mapsf)
 mf_map(mun, col = "ivory4", border = "ivory")
 ```
+
+
+::: {.callout-tip icon=true appearance=default title="Exercice"}
+1. Plot municpalities with `sf`. The filling color must be blue and borders must be thick.
+2. Plot municipalities with `mapsf`. The filling color must be lightgreen and borders must be white and thin.
+3. Add the restaurants to the municpalities map. 
+4. How many municipalities are there?
+5. Which commune has the largest population?
+:::
+
+
 
 
 ## Coordinate Reference Systems (CRS)
@@ -197,6 +224,7 @@ mun[mun$NOM_COM == "Gramat", 1:4]
 ```
 
 
+
 ### Attribute join
 
 We can join a `data.frame` and an `sf` object using `merge()` if they share a common identifier.   
@@ -223,4 +251,19 @@ mun_final <- merge(
 # the two objects have been joined
 head(mun_final, 3)
 ```
+
+
+
+
+::: {.callout-tip icon=true appearance=default title="Exercice"}
+1. Import the **com.csv** file.
+This dataset covers all municipalities and includes several additional variables:
+    * working population (ACT)
+    * working population in the industrial sector (IND)
+    * working population as a percentage of total population (SACT)
+    * share of the working population working in the industrial sector (SACT_IND)
+2. Join this dataset to the municipality layer.
+3. Extract municipalities with more than 500 active workers and whose share of active workers in the total population is greater than 30%.
+4. Plot a map with all municipalities in gray and selected municipalities in red.
+:::
 
