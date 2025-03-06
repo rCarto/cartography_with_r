@@ -13,7 +13,7 @@ Topics covered:
 **How to use the manual**    
 Datasets used in this document are stored in an RStudio project. 
 You need to download it and unzip it on your machine. You will then be able to test all data processing proposed in this document using the **geodata** project.  
-[Download project](https://rcarto.github.io/cartograpy_with_r/geodata.zip){.btn .btn-primary .btn-sm role=“button”}  
+[Download project](https://rcarto.github.io/cartography_with_r/geodata.zip){.btn .btn-primary .btn-sm role=“button”}  
 
 **Contribution and feedback**    
 You can send your comments and suggestions by [posting an *issue*](https://github.com/rCarto/cartography_with_r/issues) on the [GitHub repository](https://github.com/rCarto/cartography_with_r) of this document. 
