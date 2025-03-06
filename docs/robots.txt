@@ -1,1 +1,1 @@
-Sitemap: https://rcarto.github.io/rcarto/cartographie_with_r/sitemap.xml
+Sitemap: https://rcarto.github.io/rcarto/cartography_with_r/sitemap.xml

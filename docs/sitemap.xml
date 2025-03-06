@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://rcarto.github.io/rcarto/cartographie_with_r/index.html</loc>
+    <loc>https://rcarto.github.io/rcarto/cartography_with_r/index.html</loc>
     <lastmod>2025-03-06T16:12:10.472Z</lastmod>
   </url>
   <url>
-    <loc>https://rcarto.github.io/rcarto/cartographie_with_r/0_spatial_ecosystem.html</loc>
+    <loc>https://rcarto.github.io/rcarto/cartography_with_r/0_spatial_ecosystem.html</loc>
     <lastmod>2025-03-05T10:14:14.388Z</lastmod>
   </url>
   <url>
-    <loc>https://rcarto.github.io/rcarto/cartographie_with_r/1_vector_data.html</loc>
+    <loc>https://rcarto.github.io/rcarto/cartography_with_r/1_vector_data.html</loc>
     <lastmod>2025-03-04T14:42:34.480Z</lastmod>
   </url>
   <url>
-    <loc>https://rcarto.github.io/rcarto/cartographie_with_r/2_geoprocessing.html</loc>
+    <loc>https://rcarto.github.io/rcarto/cartography_with_r/2_geoprocessing.html</loc>
     <lastmod>2025-03-04T14:26:45.382Z</lastmod>
   </url>
   <url>
-    <loc>https://rcarto.github.io/rcarto/cartographie_with_r/3_cartography.html</loc>
+    <loc>https://rcarto.github.io/rcarto/cartography_with_r/3_cartography.html</loc>
     <lastmod>2025-03-05T09:53:07.900Z</lastmod>
   </url>
   <url>
-    <loc>https://rcarto.github.io/rcarto/cartographie_with_r/4_mapsf.html</loc>
+    <loc>https://rcarto.github.io/rcarto/cartography_with_r/4_mapsf.html</loc>
     <lastmod>2025-03-05T10:03:21.104Z</lastmod>
   </url>
   <url>
-    <loc>https://rcarto.github.io/rcarto/cartographie_with_r/2000_references.html</loc>
+    <loc>https://rcarto.github.io/rcarto/cartography_with_r/2000_references.html</loc>
     <lastmod>2024-05-16T12:22:11.344Z</lastmod>
   </url>
 </urlset>

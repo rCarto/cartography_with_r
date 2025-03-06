@@ -33,12 +33,12 @@ book:
   date: today
   date-format: long
   search: true
-  repo-url: https://github.com/rcarto/cartographie_with_r/
+  repo-url: https://github.com/rcarto/cartography_with_r/
   cover-image: img/globe-africa-solid.svg
   sidebar: 
     footer: "</br>[![](img/cc-icon.svg){height=42px}](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr)" 
   favicon: img/globe-africa-solid.svg
-  site-url: https://rcarto.github.io/rcarto/cartographie_with_r/
+  site-url: https://rcarto.github.io/rcarto/cartography_with_r/
   open-graph: true
   chapters:
     - index.qmd
