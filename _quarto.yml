@@ -45,9 +45,11 @@ book:
     - part: "**I. The Spatial Ecosystem**"
       chapters: 
          - 0_spatial_ecosystem.qmd
+    - part: "**II. Vector Data & Geoprocessing**"
+      chapters: 
          - 1_vector_data.qmd
          - 2_geoprocessing.qmd
-    - part: "**II. Cartography**"
+    - part: "**III. Cartography**"
       chapters: 
         - 3_cartography.qmd
         - 4_mapsf.qmd

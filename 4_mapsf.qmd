@@ -314,7 +314,8 @@ mf_credits()
 
 
 :::{.callout-note}
-#### `mf_layout()` combines these elements and add a complete layout to the map (title, credits, north arrow, scale bar).
+
+`mf_layout()` combines these elements and add a complete layout to the map (title, credits, north arrow, scale bar).
 
 ```{r layout1}
 mf_map(mun)
@@ -519,15 +520,8 @@ mf_map(com, add=TRUE)
 
 
 ::: {.callout-tip icon=true appearance=default title="Exercice"}
-1. Import the **com.csv** file.
-This dataset covers all municipalities and includes several additional variables:
-    * working population (ACT)
-    * working population in the industrial sector (IND)
-    * working population as a percentage of total population (SACT)
-    * share of the working population working in the industrial sector (SACT_IND)
-2. Join this dataset to the municipality layer.
-3. Create a map showing the working population in the industrial sector.
-4. Add the necessary layout elements.
-5. Make the map more intelligible, more explicit.
-6. Export the map in PNG format, 1000 pixels wide. 
+1. Create a map showing the working population in the industrial sector.
+2. Add the necessary layout elements.
+3. Make the map more intelligible, more explicit.
+4. Export the map in PNG format, 1000 pixels wide. 
 :::

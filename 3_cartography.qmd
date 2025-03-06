@@ -9,7 +9,7 @@
 ::: {.callout-tip icon=true appearance=default title="Exercice"}
 How to represent the following variables:
 
-  * A municipal populatio
+  * A municipal population
   * A median age by region
   * A population growth rate
   * The administrative status of municipalities
