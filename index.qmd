@@ -20,7 +20,23 @@ You can send your comments and suggestions by [posting an *issue*](https://githu
 
 
 **Context**  
-This document is an extract and a translation of [Cartographie avec R](https://rcarto.github.io/cartographie_avec_r/) [-@cartowithr] and [Géomatique avec R](https://rcarto.github.io/geomatique_avec_r/) [-@geowithr].
+This document is an extract and a translation of [Cartographie avec R](https://rcarto.github.io/cartographie_avec_r/) [-@cartowithr] and [Géomatique avec R](https://rcarto.github.io/geomatique_avec_r/) [-@geowithr]. It is the basis for a one-day course on geomatics and cartography with R.   
+
+
+**See aslo**
+
+::: {layout="[[1,1,1,1,1], [1,1,1]]"}
+
+![@lovelace2025](img/geocomp.jpg)
+
+
+![@pebesma2023](img/sds.webp)
+
+
+![@hijmans](img/r3.png)
+
+:::
+
 
 
 <br><br>![](img/logo_footer.svg){height=60px fi-align="center"}

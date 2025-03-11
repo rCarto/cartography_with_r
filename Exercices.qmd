@@ -1,7 +1,18 @@
 ---
-title: "Cartographie avec R - Exercices"
+title: "Cartography with R - Exercises"
+description: "Create reproducible maps with R"
+author:
+  - name: Timothée Giraud
+    orcid: 0000-0001-5679-6536
+    url: https://rcarto.github.io
+    affiliation:
+        name: Center for Spatial Analysis and Geovizualization
+        url: https://riate.cnrs.fr
+        department: UAR RIATE
+        group: CNRS
+date: today
+date-format: long
 toc: true
-highlight-style: atom-one
 output-file: Exercices
 output-ext: html
 self-contained: true
@@ -10,256 +21,338 @@ knitr:
     comment: "#>" 
 ---
 
-# mapsf
+# Vector Data & Geoprocessing
 
-2. Installez le package `mapsf`.
+## Vector Data
 
-
+### sf package
+Install the sf package.
 ```{r}
 #| eval: false
-install.packages("mapsf")
+install.packages("sf")
 ```
 
-3. Quelle est la version du package?
-
-```{r}
-packageVersion("mapsf")
-```
-
-4. Quelles sont les nouveautés par rapport à la version précédente?
-
-Voir le [*changelog*](https://riatelab.github.io/mapsf/news/) sur le site du package.
-
-# La sémiologie graphique
-
-Comment représenter les variables suivantes :
-
-  * Une population communale **-> carte de symboles proportionnels, tailles**
-  * Un age médian par département **-> carte choroplèthe, valeurs**
-  * Un taux de croissance **-> carte choroplèthe, valeurs**
-  * Le statut administratif d'une commune (préfecture, sous-préfecture, commune simple…) **-> carte de typologie, couleurs ou formes différentes**
-  * L'espérance de vie par pays **-> carte choroplèthe, valeur**
-  
-  
-  
-
-# Les types de cartes  
-
-
-1. Importer la couche des communes du département du Lot à partir du fichier geopackage **lot.gpkg**.
-
+### Import and export
+Import municipalities.
 ```{r}
 library(sf)
-st_layers('data/lot.gpkg')
-com_raw <- st_read("data/lot.gpkg", layer = "communes", quiet = TRUE)
+st_layers(dsn = "data/lot.gpkg")
+mun <- st_read("data/lot.gpkg", layer = "communes")
 ```
 
+### Explore and display
 
-
-2. Importer le fichier **com.csv**.   
-  Ce jeu de données porte sur les communes du Lot et contient plusieurs variables supplémentaires: 
-    - le nombre d'actifs (**ACT**). 
-    - le nombre d'actifs dans l'industrie (**IND**)
-    - la part des actifs dans la population totale (**SACT**)
-    - la part des actifs dans l'industrie dans le total des actifs (**SACT_IND**) 
-
+1. Plot municpalities with `sf`. The filling color must be blue and borders must be thick.
 ```{r}
-com_df <- read.csv("data/com.csv")
+plot(st_geometry(mun), col = "lightblue", lwd = 2)
 ```
 
-3. Joindre le jeu de données et la couche des communes. 
 
+2. Plot municipalities with `mapsf`. The filling color must be lightgreen and borders must be white and thin.
 ```{r}
-com <- merge(com_raw, com_df, by = "INSEE_COM", all.x = TRUE)
+# install.packages("mapsf")
+library(mapsf)
+mf_map(mun, col = "lightgreen", border = "#ffffff", lwd = .5)
+```
+
+3. Add the restaurants to the municpalities map. 
+```{r}
+rest <- st_read("data/lot.gpkg", layer = "restaurants")
+mf_map(mun, col = "lightgreen", border = "#ffffff", lwd = .5)
+mf_map(rest, pch = 21, col = "red", cex = 1, add = TRUE)
 ```
 
 
-4. Créer une carte de la population active.  
+4. How many municipalities are there?
+```{r}
+# dim(mun)[1]
+nrow(mun)
+# length(unique(mun$INSEE_COM))
+```
+
+
+5. Which commune has the largest population?
+```{r}
+# mun[order(mun$POPULATION, decreasing = T), 2][1, ]
+mun[mun$POPULATION == max(mun$POPULATION), 2]
+```
+
+
+
+### Attribute selection and join
+
+1. Import the **com.csv** file.
+```{r}
+mun_df <- read.csv("data/com.csv")
+```
+
+2. Join this dataset to the municipality layer.
+```{r}
+mun_final <- merge(
+  x = mun, # the sf object
+  y = mun_df, # the data.frame
+  by = "INSEE_COM", # identifier in x and y
+  all.x = TRUE # keep all lines
+)
+```
+
+3. Extract municipalities with more than 500 active workers and whose share of active workers in the total population is greater than 30%.
+```{r}
+mun_sel <- mun_final[mun_final$ACT > 500 & mun_final$SACT > 30, ]
+```
+
+4. Plot a map with all municipalities in gray and selected municipalities in red.
+```{r}
+mf_map(mun_final, col = "grey40", border = 'lightblue')
+mf_map(mun_sel, col = "red", add = TRUE)
+
+```
+
+## Geoprocessing
+
+### Spatial selection and join
+1. Import the layers of municipalities and restaurants.
+```{r}
+rest <- st_read("data/lot.gpkg", layer = "restaurants")
+mun  <- st_read("data/lot.gpkg", layer = "communes")
+```
+
+2. Perform a spatial join to find the name and identifier of the municipality where each restaurant is located.
+```{r}
+
+resto <- st_join(x = rest, y = mun[, "INSEE_COM"], 
+                 join = st_intersects,
+                 left = FALSE)
+resto
+
+```
+
+
+### Geometrical operations
+
+1. Compute the number of restaurants per municipality.
+```{r}
+mun$n <- lengths(st_intersects(mun, resto, sparse = T))
+########### OR
+# resto <- st_join(x = rest, y = mun[, "INSEE_COM"], 
+#                  join = st_intersects,
+#                  left = FALSE)
+# rest_by_mun <- aggregate(x = list(n = resto$id), 
+#                          by = list(INSEE_COM = resto$INSEE_COM), 
+#                          FUN = length)
+# mun <- merge(mun, rest_by_mun, "INSEE_COM", all.x = TRUE)
+# mun[is.na(mun$n), "n"] <- 0
+```
+
+
+
+2. Which municipalities have more than 10 restaurants and fewer than 1000 inhabitants?
+```{r}
+mun_sel <- mun[mun$n > 10 & mun$POPULATION < 1000, ]
+```
+
+3. Create a map showing all the municipalities in grey and the municipalities selected above in red.
+```{r}
+mf_map(mun_final, col = "grey40", border = 'lightblue')
+mf_map(mun_sel, col = "red", add = TRUE)
+```
+
+
+# Cartography
+
+## The Cartographic Language
+
+How to represent the following variables:
+
+* A municipal population   
+**Proportional Symbols**
+* A median age by region  
+**Choropleth map, ordered colors**  
+* A population growth rate  
+**Choropleth map, ordered colors**  
+* The administrative status of municipalities  
+**Typologie map, unordered colors**  
+* Life expectancy per country  
+**Choropleth map, ordered colors**  
+
+## mapsf
+
+### Map Types
+
+1. Import the **com.csv** file.
+```{r}
+mun_df <- read.csv("data/com.csv")
+```
+
+2. Join this dataset to the municipality layer.
+```{r}
+mun  <- st_read("data/lot.gpkg", layer = "communes")
+mun <- merge(
+  x = mun, # the sf object
+  y = mun_df, # the data.frame
+  by = "INSEE_COM", # identifier in x and y
+  all.x = TRUE # keep all lines
+)
+```
+
+3. Create a map of the working population.
 ```{r}
 library(mapsf)
-# afficher les communes
-mf_map(com, col = "ivory4", border = "ivory" , lwd = .3)
-# afficher des cercles proportionnels
-mf_map(x = com, var = "ACT", type = "prop",
-       inches = .25, lwd = .75, col = "#881094",
-       leg_title = "Nombre d'actifs",
-       leg_pos = c(622700, 6372800))
-mf_title("Répartition des actifs dans le Lot")
+mf_map(mun, col = "ivory4", border = "ivory" , lwd = .3)
+mf_map(
+  x = mun  ,
+  var = "ACT",
+  type = "prop",
+  inches = .35,
+  symbol = "square",
+  border = "white",
+  lwd = .75,
+  col = "#881094",
+  leg_title = "Working Population",
+  leg_pos = c(622700, 6372800)
+)
+mf_title("Working Population in the Lot Region")
 ```
 
-
-5. Créer une carte de la part de la population active dans la population totale.  
+4. Create a map of the share of the working population in the total population.
 ```{r}
-# Étude de la distribution
-mf_distr(com$SACT)
-summary(com$SACT)
-
-# choix de la méthode msd (utilisant moyenne et écart-type)
-bks <- mf_get_breaks(com$SACT, breaks = "msd", central = FALSE)
-# Utilisation d'une palette dissymétrique équilibrée autour de la moyenne
+mf_distr(mun$SACT)
+summary(mun$SACT)
+# Classification method based mean and standard deviation
+bks <- mf_get_breaks(mun$SACT, breaks = "msd", central = FALSE)
+# Double color palette
 cols <- mf_get_pal(c(3,4), palette = c("Mint", "Burg"))
 
-# Création de la carte
-mf_map(x = com, var = "SACT", type = "choro",
-       breaks = bks, pal = cols,
-       border = "ivory4", lwd = .2,
-       leg_title = "Part des actifs\ndans la population\n(en %)",
-       leg_val_rnd = 0)
-mf_title("Concentration communale des actifs dans le Lot")
+mf_map(
+  x = mun,
+  var = "SACT",
+  type = "choro",
+  breaks = bks,
+  pal = cols,
+  border = "ivory4",
+  lwd = .2,
+  leg_title = "%",
+  leg_val_rnd = 0
+)
+mf_title("Share of the working population in the total poulation")
 ```
 
-# La mise en page 
-
-1. Importer la couche des communes du département du Lot à partir du fichier geopackage **lot.gpkg**.
-
-2. Importer le fichier **com.csv**.   
-  Ce jeu de données porte sur les communes du lot et contient plusieurs variables supplémentaires: 
-    - le nombre d'actifs (**ACT**). 
-    - le nombre d'actifs dans l'industrie (**IND**)
-    - La part des actifs dans la population totale (**SACT**)
-    - La part des actifs dans l'industrie dans le total des actifs (**SACT_IND**) 
-
-3. Joindre le jeu de données et la couche des communes. 
-
-4. Créez une carte représentant la population active travaillant dans l'industrie. 
-
-5. Ajoutez les éléments d'habillage indispensables.
-
-6. Utilisez un thème personnalisé.
-
-7. Ajoutez un carton de localisation du Lot.
-
-8. Exportez la carte au format PNG avec 800 pixels de large. 
-
-9. Comment rendre la carte plus intelligible ? Allez-y !
+### Map Layout
+1. Create a map showing the working population in the industrial sector.
+2. Add the necessary layout elements.
+3. Make the map more intelligible, more explicit.
+4. Export the map in PNG format, 1000 pixels wide. 
 
 
+
+**Workers + Workers in the industrial sector**
 ```{r}
-library(sf)
-library(mapsf)
-# import des communes du Lot
-com <- st_read("data/lot.gpkg", layer = "communes", quiet = TRUE)
-# import du jeu de données
-com_df <- read.csv("data/com.csv")
-# jointure
-com <- merge(com, com_df, by = "INSEE_COM", all.x = TRUE)
-# import des départments français
+#| fig-width: 8
+#| fig-height: 4.25
 dep <- st_read("data/lot.gpkg", layer = "departements", quiet = TRUE)
+# Workers  + Workers in the industrial sector
+par(mfrow = c(1, 2))
 
-# Création et application d'un thème personnalisé
-mf_theme("green", mar = c(0,0,1.5,0), pos = "left")
-# couleur principale utilisée
-mf_theme()$fg
-
-# Cartographie du nombre total de travailleurs de l'industrie
-mf_export(com, "img/n_ind.png", width = 800)
-mf_map(x = com, border = "white", lwd = .2, add = T)
+mf_map(x = mun, border = "white", lwd = .2, add = F)
 mf_map(x = dep, lwd = 1, col = NA, add = TRUE, lend = 0)
-mf_map(x = com, var = "IND", type = "prop",
-       leg_title = "Nombre d'actifs\ntravaillant dans\nl'industrie")
-mf_title("Répartition des actifs travaillant dans l'industrie - 2017")
+mf_map(x = mun, var = "ACT", 
+       type = "prop",
+       inches=.2,
+       leg_frame = T,
+       leg_title = "N.")
+mf_title("Working Population", tab = FALSE)
+mf_credits(
+  paste0("Admin Express COG Carto 3.0, IGN - 2021 & ",
+         "BD CARTO® 4.0, IGN - 2021 ; Recensements harmonisés - ",
+         "Séries départementales et munmunales, INSEE - 2020\n",
+         "Auteurs : T. Giraud, 2025"), bg ="#ffffff80")
+mf_map(x = mun, border = "white", lwd = .2, add = F)
+mf_map(x = dep, lwd = 1, col = NA, add = TRUE, lend = 0)
+mf_map(x = mun, var = "IND", 
+       type = "prop",
+       inches=.2,
+       leg_frame = T,
+       leg_title = "N.")
+mf_title("Working Population in the Industrial Sector", tab = FALSE)
 mf_scale(5)
 mf_arrow(pos = "topright")
-# notez l'utilisation ici de paste0() qui permet de concatener des chaines
-# de caractères et de \n qui permet d'aller à la ligne
-mf_credits(paste0("Admin Express COG Carto 3.0, IGN - 2021 & ",
-                  "BD CARTO® 4.0, IGN - 2021 ; Recensements harmonisés - ",
-                  "Séries départementales et communales, INSEE - 2020\n",
-                  "Auteurs : T. Giraud & H. Pecout, 2024"))
-dev.off()
-```
-
-![](img/n_ind.png)  
-
-```{r}
-# Cartographie de la part des actifs travaillant dans l'industrie
-## Quelle est la forme de la distribution que nous voulons cartographier ?
-mf_distr(com$SACT_IND)
-summary(com$SACT_IND)
-
-#### > Seules 2 communes ont 100% de travailleurs dans l'industrie
-#### Ces communes ont moins de 15 actifs
-# Sélection des communes ayant plus de 15 actifs
-com_sel <- com[com$ACT > 15, ]
-## Quelle est la forme de cette (nouvelle) distribution
-mf_distr(com_sel$SACT_IND)
-summary(com_sel$SACT_IND)
-
-# Creation d'un vecteur contenant les limites de classes en
-# utilisant la méthode des quantiles
-bks <- mf_get_breaks(com_sel$SACT_IND, nbreaks = 5, breaks = "quantile")
 ```
 
 
+**Share of workers in the industrial secto**
 ```{r}
-# export de la carte
-mf_export(com, "img/s_ind.png", width = 800)
-# Cartographie
-mf_map(x = com,
+mf_distr(mun$SACT_IND)
+summary(mun$SACT_IND)
+```
+2 municipalities have a 100% share of workers in the industrial sector. Both have less than 15 workers. They are outliers. 
+
+```{r}
+#| fig-width: 5
+#| fig-height: 5.2
+# Remove outliers
+mun_sel <- mun[mun$ACT > 15, ]
+mf_distr(mun_sel$SACT_IND)
+summary(mun_sel$SACT_IND)
+bks <- mf_get_breaks(mun_sel$SACT_IND, nbreaks = 5, breaks = "quantile")
+mf_map(x = mun,
        var = "SACT_IND",
        type = "choro",
-       breaks = bks,         # Utilisation des bornes de classes créées précédement
-       leg_val_rnd = 0,      # arrondir les valeurs dans la légende
-       pal = "Red-Yellow",   # Utilisation d'une palette de couleur
-       leg_title = "Part des actifs\ntravaillant dans\nl'industrie",
-       add = TRUE,
+       breaks = bks,        
+       leg_val_rnd = 0,      
+       pal = "Red-Yellow",  
+       leg_title = "%",
+       add = FALSE,
        col_na = "grey",
-       leg_no_data = "Communes de moins de 15 actifs") # texte du no data dans la légende
-mf_title("Répartition des actifs travaillant dans l'industrie - 2017")
+       leg_no_data = "less than 15 workers")
+mf_title("Share of workers in the industrial sector")
 mf_scale(5)
 mf_arrow(pos = "topright")
-mf_credits(paste0("Admin Express COG Carto 3.0, IGN - 2021 & ",
-                  "BD CARTO® 4.0, IGN - 2021 ; Recensements harmonisés - ",
-                  "Séries départementales et communales, INSEE - 2020\n",
-                  "Auteurs : T. Giraud & H. Pecout, 2024"))
-dev.off()
+mf_credits(paste0("Auteurs : T. Giraud, 2025\n","Admin Express COG Carto 3.0, IGN - 2021 & ",
+                  "BD CARTO® 4.0, IGN - 2021 ;\nRecensements harmonisés - ",
+                  "Séries départementales et munmunales, INSEE - 2020"))
 ```
-![](img/s_ind.png)  
 
 
+**Final Map**
 ```{r}
-# Nous allons maintenant combiner le nombre total d'actifs et la parts des travailleurs de l'industrie.
-mf_export(com, "img/c_ind.png", width = 800)
-mf_map(x = com, border = "white", lwd = .2, add = TRUE)
+mf_export(x = mun, filename = "img/map.png", width = 1000, res= 120)
+mf_map(x = mun, border = "white", lwd = .2, add = T)
 mf_map(x = dep, lwd = 1, col = NA, add = TRUE, lend = 0)
-mf_map(com, c("ACT", "SACT_IND"), "prop_choro",
+mf_map(mun, c("ACT", "SACT_IND"), "prop_choro",
        breaks = bks,
        pal = "Red-Yellow",
        inches = .4,
        border = "white", lwd = .7,
        leg_val_rnd =  c(0,1),
-       leg_pos = c(538000,6442000, 538000, 6424000),  # ici les légendes sont positionnées manuellement
-       leg_title = c("Nombre d'actifs",
-                     "Part des actifs\ndans l'industrie (en %)"),
+       leg_pos = c(538000,6442000, 538000, 6424000), 
+       leg_title = c("N. workers",
+                     "Workers in the\nIndustrial Sector\n(%)"),
        col_na = "grey",
-       leg_no_data = "Communes de moins de 15 actifs")
+       leg_no_data = "Less than 15 workers")
 
 # Ajout d'annotations
-mf_annotation(x = com[com$NOM_COM=="Biars-sur-Cère",], txt = "Andros",
-              col_arrow = "#D7FF68", halo = TRUE, cex = 1)
-mf_annotation(x = com[com$NOM_COM=="Figeac",], txt = "Industrie\naéronautique",
-              col_arrow = "#D7FF68", pos = "bottomright", halo = TRUE, cex = 1)
-mf_annotation(x = com[com$NOM_COM=="Gramat",], txt = "La Quercynoise",
-              col_arrow = "#D7FF68", pos = "topleft", halo = TRUE, cex = 1)
+mf_annotation(x = mun[mun$NOM_COM=="Biars-sur-Cère",], txt = "Andros\n(jam factory)",
+             halo = TRUE, cex = 1)
+mf_annotation(x = mun[mun$NOM_COM=="Figeac",], txt = "Aerospace\nIndustry",
+             pos = "bottomright", halo = TRUE, cex = 1)
+mf_annotation(x = mun[mun$NOM_COM=="Gramat",], txt = "La Quercynoise\n(duck meat factory)",
+              pos = "topleft", halo = TRUE, cex = 1)
 
-mf_title("Répartition des actifs travaillant dans l'industrie - 2017")
+mf_title("MECANIC VALLEE")
 
-# ajout d'un carton ->
+# inset->
 mf_inset_on(fig = c(.8,0.98,0.1,0.3))
 mf_map(dep, lwd = .1)
-mf_map(com, border = NA, add = TRUE, col = "#D7FF68")
-box(col = "#D7FF68", lwd = .5)
+mf_map(mun, border = NA, add = TRUE, col = "#D7FF68")
+box(lwd = .5)
 mf_inset_off()
-# <- fin du carton
+# <- inset
 mf_scale(5)
 mf_arrow("topright")
-mf_credits(paste0("Admin Express COG Carto 3.0, IGN - 2021 & ",
-                  "BD CARTO® 4.0, IGN - 2021 ; Recensements harmonisés - ",
-                  "Séries départementales et communales, INSEE - 2020\n",
-                  "Auteurs : T. Giraud & H. Pecout, 2024"))
+mf_credits(paste0("Auteurs : T. Giraud, 2025\n","Admin Express COG Carto 3.0, IGN - 2021 & ",
+                  "BD CARTO® 4.0, IGN - 2021 ;\nRecensements harmonisés - ",
+                  "Séries départementales et munmunales, INSEE - 2020"))
 dev.off()
 ```
 
-
-
-![](img/c_ind.png)
+![](img/map.png)

@@ -3,7 +3,16 @@
 
 The spatial ecosystem of R is rich, dynamic and mature and several packages can be used to import, process and represent spatial data.
 
-The following short presentation is an overview of this ecosystem.   
+The following short presentation is an overview of this ecosystem:  
+&#128279; [Introduction to the R Spatial Ecosystem](https://rcarto.github.io/R_Spatial_Ecosystem)
 
 
-&#128279; [Introduction to the R Spatial Ecosystem](https://rcarto.github.io/R_Spatial_Ecosystem) &#128279;
+:::{.callout-note title="See also"}:   
+<div id="ref-bivand2021" class="csl-entry" role="listitem">
+Bivand, Roger. 2021. <span>“Progress in the <span>R</span> Ecosystem for
+Representing and Handling Spatial Data.”</span> <em>Journal of
+Geographical Systems</em> 23 (4): 515–46. <a href="https://doi.org/10.1007/s10109-020-00336-0">https://doi.org/10.1007/s10109-020-00336-0</a>.
+</div>
+:::
+
+

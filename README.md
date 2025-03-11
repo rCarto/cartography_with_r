@@ -8,7 +8,7 @@ You can send us your comments and suggestions by [posting an *issue*](https://gi
 
 
 **Context**  
-This document is an extract and a translation of [Cartographie avec R](https://rcarto.github.io/cartographie_avec_r/)
+This document is an extract and a translation of [Cartographie avec R](https://rcarto.github.io/cartographie_avec_r/) and [Géomatique avec R](https://rcarto.github.io/geomatique_avec_r/).
 
 
 
